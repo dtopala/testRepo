@@ -20,5 +20,4 @@ jobs:
 
       - name: Sync files to remote server
         run: |
-          rsync -avz --delete ./ user@ubuntu22-test:testRepo
-
+          rsync -avz --delete -e "ssh -p 43231" ./ dtopala@ubuntu22-test:testRepo
