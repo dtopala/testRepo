@@ -20,5 +20,5 @@ jobs:
 
       - name: Sync files to remote server
         run: |
-          rsync -avz --delete ./ user@ub22test:/cale/catre/proiect
+          rsync -avz --delete ./ user@ubuntu22-test:testRepo
 
