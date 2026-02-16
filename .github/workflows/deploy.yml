@@ -1,0 +1,29 @@
+name: Deploy to UB22TEST
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Add server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -p 43231 157.90.181.132 >> ~/.ssh/known_hosts
+
+      - name: Sync files to remote server
+        run: |
+          rsync -avz --delete -e "ssh -p 43231" ./ dtopala@157.90.181.132:testRepo
+
