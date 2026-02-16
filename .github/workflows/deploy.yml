@@ -1,0 +1,24 @@
+name: Deploy to UB22TEST
+
+on:
+  pull_request:
+    branches:
+      - main  # branch-ul principal sau cel unde se face merge
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Set up SSH
+        uses: webfactory/ssh-agent@v0.7.0
+        with:
+          ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
+
+      - name: Sync files to remote server
+        run: |
+          rsync -avz --delete ./ user@ub22test:/cale/catre/proiect
+
